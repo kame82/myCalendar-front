@@ -1,6 +1,36 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
+import { useAuth } from "../providers/auth";
+import { useRouter } from "next/navigation";
 
 export const Header = () => {
+  const { setToken, currentUser, token, logout, setCurrentUser } = useAuth();
+  const navigate = useRouter();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    if (token) {
+      setToken(token);
+      localStorage.setItem("auth", token);
+    }
+  }, [setToken, navigate]);
+
+  const handleGoogleAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const form = document.createElement("form");
+    form.method = "GET";
+    form.action = `${process.env.NEXT_PUBLIC_API_URL}/auth/google_oauth2`;
+    document.body.appendChild(form);
+    form.submit();
+  };
+
+  const handleClickLogout = () => {
+    logout();
+    console.log("logout");
+    navigate.push("/");
+  };
+
   return (
     <header className="text-gray-600 body-font bg-white">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -31,17 +61,17 @@ export const Header = () => {
             <path d="M5 12h14M12 5l7 7-7 7"></path>
           </svg>
         </button>
-        {/* <form action="http://0.0.0.0:3000/auth/google_oauth2" method="post">
-          <button type="submit" className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
+
+        {currentUser ? (
+          <div>
+            <p>aaaa</p>
+            <button onClick={handleClickLogout}>ログアウト</button>
+          </div>
+        ) : (
+          <button onClick={handleGoogleAuth} className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
             Sign in with Google
           </button>
-        </form> */}
-        <form action="http://localhost:3000/auth/google_oauth2">
-          {/* <input type="hidden" name="authenticity_token" /> */}
-          <button type="submit" className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
-            Sign in with Google
-          </button>
-        </form>
+        )}
       </div>
     </header>
   );
