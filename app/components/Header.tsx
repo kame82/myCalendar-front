@@ -32,7 +32,7 @@ export const Header = () => {
     navigate.push("/");
   };
 
-  const resReadCaelendar = async () => {
+  const resReadCalendar = async () => {
     try {
       const res = await axiosInstance.get("/google_calendars");
       console.log(res);
@@ -60,7 +60,7 @@ export const Header = () => {
           <span className="ml-3 text-xl">Tailblocks</span>
         </a>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-          <a className="mr-5 hover:text-gray-900" onClick={resReadCaelendar}>
+          <a className="mr-5 hover:text-gray-900" onClick={resReadCalendar}>
             カレンダー情報取得
           </a>
           <a className="mr-5 hover:text-gray-900">Second Link</a>
