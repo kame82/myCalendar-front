@@ -9,11 +9,9 @@ export const axiosInstance = axios.create({
 
 // リクエストインターセプターで Authorization ヘッダーを動的に設定
 axiosInstance.interceptors.request.use((config) => {
-  if (typeof window !== "undefined") {
-    const authToken = localStorage.getItem("authToken");
-    if (authToken) {
-      config.headers.Authorization = `Bearer ${authToken}`;
-    }
+  const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });

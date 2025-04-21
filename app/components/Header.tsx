@@ -34,7 +34,7 @@ export const Header = () => {
 
   const resReadCaelendar = async () => {
     try {
-      const res = await axiosInstance.get("/google_calendar");
+      const res = await axiosInstance.get("/google_calendars");
       console.log(res);
     } catch (error) {
       console.error(error);
