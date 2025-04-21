@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { useAuth } from "../providers/auth";
 import { useRouter } from "next/navigation";
+import { axiosInstance } from "../lib/axios";
 
 export const Header = () => {
   const { setToken, currentUser, token, logout, setCurrentUser } = useAuth();
@@ -31,17 +32,37 @@ export const Header = () => {
     navigate.push("/");
   };
 
+  const resReadCaelendar = async () => {
+    try {
+      const res = await axiosInstance.get("/google_calendar");
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <header className="text-gray-600 body-font bg-white">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
+            viewBox="0 0 24 24"
+          >
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
           </svg>
           <span className="ml-3 text-xl">Tailblocks</span>
         </a>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-          <a className="mr-5 hover:text-gray-900">First Link</a>
+          <a className="mr-5 hover:text-gray-900" onClick={resReadCaelendar}>
+            カレンダー情報取得
+          </a>
           <a className="mr-5 hover:text-gray-900">Second Link</a>
           <a className="mr-5 hover:text-gray-900">Third Link</a>
           <a className="mr-5 hover:text-gray-900">Fourth Link</a>
